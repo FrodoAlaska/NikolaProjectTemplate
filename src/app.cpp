@@ -60,7 +60,7 @@ void app_shutdown(nikola::App* app) {
 
 void app_update(nikola::App* app, const nikola::f64 delta_time) {
   // Quit the application when the specified exit key is pressed
-  if(!nikola::input_key_pressed(nikola::KEY_ESCAPE)) {
+  if(nikola::input_key_pressed(nikola::KEY_ESCAPE)) {
     nikola::event_dispatch(nikola::Event{.type = nikola::EVENT_APP_QUIT});
     return;
   }
