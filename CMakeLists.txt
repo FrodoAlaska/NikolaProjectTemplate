@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.27)
-project(NikolaProjectTemplate)
+project(NikolaProjectTemplate) # @TODO: Change the name of your project from here
 
 ### FetchContent ###
 ############################################################
 include(FetchContent)
 
 set(NIKOLA_BUILD_TESTBED OFF)
+set(NIKOLA_BUILD_NBR     OFF)
 
 FetchContent_Declare(
   nikola
@@ -21,9 +22,6 @@ set(PROJECT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(PROJECT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(PROJECT_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs)
 
-set(PROJECT_BUILD_FLAGS "")
-set(PROJECT_BUILD_DEFINITIONS "")
-
 set(PROJECT_INCLUDES 
   ${PROJECT_INCLUDE_DIR}
   ${PROJECT_LIBS_DIR}
@@ -32,6 +30,8 @@ set(PROJECT_INCLUDES
   ${glfw_SOURCE_DIR}/include
   ${glm_SOURCE_DIR}
 )
+
+include(cmake/variables.cmake)
 ############################################################
 
 ### CMake variables ###
