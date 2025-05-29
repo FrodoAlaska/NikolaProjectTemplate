@@ -6,10 +6,7 @@
 /// App
 struct nikola::App {
   nikola::Window* window; 
-
   nikola::FrameData frame_data;
-  nikola::RenderQueue render_queue; 
-
   nikola::u16 resource_group;
 
   bool has_editor = false;
@@ -40,8 +37,14 @@ nikola::App* app_init(const nikola::Args& args, nikola::Window* window) {
   app->window = window;
 
   // Camera init
-  float aspect_ratio = nikola::window_get_aspect_ratio(app->window);
-  nikola::camera_create(&app->frame_data.camera, aspect_ratio, nikola::Vec3(10.0f, 0.0f, 10.0f), nikola::Vec3(-3.0f, 0.0f, 0.0f));
+  nikola::CameraDesc cam_desc = {
+    .position     = nikola::Vec3(10.0f, 0.0f, 10.0f),
+    .target       = nikola::Vec3(-3.0f, 0.0f, 0.0f),
+    .up_axis      = nikola::Vec3(0.0f, 1.0f, 0.0f),
+    .aspect_ratio = nikola::window_get_aspect_ratio(app->window),
+    .move_func    = nikola::camera_fps_move_func,
+  };
+  nikola::camera_create(&app->frame_data.camera, cam_desc);
 
   // GUI init
   nikola::gui_init(window);
@@ -78,13 +81,13 @@ void app_update(nikola::App* app, const nikola::f64 delta_time) {
 }
 
 void app_render(nikola::App* app) {
-  // nikola::renderer_begin(app->frame_data);
+  nikola::renderer_begin(app->frame_data);
   // All 3D rendering commands go here...
-  // nikola::renderer_end();
+  nikola::renderer_end();
   
-  // nikola::batch_renderer_begin();
+  nikola::batch_renderer_begin();
   // All 2D rendering commands go here...
-  // nikola::batch_renderer_end();
+  nikola::batch_renderer_end();
 }
 
 void app_render_gui(nikola::App* app) {
