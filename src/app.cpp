@@ -7,7 +7,7 @@
 struct nikola::App {
   nikola::Window* window; 
   nikola::FrameData frame_data;
-  nikola::ResoruceGroupID resource_group;
+  nikola::ResourceGroupID resource_group;
 
   bool has_editor = false;
 };
