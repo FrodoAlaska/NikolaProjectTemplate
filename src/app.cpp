@@ -7,7 +7,7 @@
 struct nikola::App {
   nikola::Window* window; 
   nikola::FrameData frame_data;
-  nikola::u16 resource_group;
+  nikola::ResoruceGroupID resource_group;
 
   bool has_editor = false;
 };
@@ -19,6 +19,7 @@ struct nikola::App {
 
 static void init_resources(nikola::App* app) {
   // Resource group init
+  
   nikola::FilePath res_path = nikola::filepath_append(nikola::filesystem_current_path(), "res");
   app->resource_group       = nikola::resources_create_group("app_res", res_path);
 }
@@ -63,12 +64,14 @@ void app_shutdown(nikola::App* app) {
 
 void app_update(nikola::App* app, const nikola::f64 delta_time) {
   // Quit the application when the specified exit key is pressed
+  
   if(nikola::input_key_pressed(nikola::KEY_ESCAPE)) {
     nikola::event_dispatch(nikola::Event{.type = nikola::EVENT_APP_QUIT});
     return;
   }
 
   // Disable/enable the GUI
+  
   if(nikola::input_key_pressed(nikola::KEY_F1)) {
     app->has_editor                  = !app->has_editor;
     app->frame_data.camera.is_active = !app->has_editor;

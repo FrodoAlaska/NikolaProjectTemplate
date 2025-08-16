@@ -7,8 +7,8 @@
 # :: MODEL @models 
 # models
 
-# :: SHADER @shaders
-# shaders
+:: SHADER @shaders
+template_shader.glsl
 
 # :: FONT @fonts
 # fonts

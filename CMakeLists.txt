@@ -5,6 +5,14 @@ project(NikolaProjectTemplate) # @TODO: Change the name of your project from her
 ############################################################
 include(FetchContent)
 
+# We must include these variables to turn off 
+# certain outputs of external libraries. Very ugly, I know.
+
+set(ALSOFT_EXAMPLES OFF)
+set(LIBTYPE         STATIC)
+set(qu3e_build_demo OFF)
+
+# Setting the state of Nikola
 set(NIKOLA_BUILD_TESTBED OFF)
 set(NIKOLA_BUILD_NBR     OFF)
 
@@ -50,7 +58,13 @@ set(PROJECT_SOURCES
 
 ### Targets ###
 ############################################################
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+if(NIKOLA_DISTRIBUTE)
+  set(EXE_TYPE WIN32)
+else()
+  set(EXE_TYPE "")
+endif()
+
+add_executable(${PROJECT_NAME} ${EXE_TYPE} ${PROJECT_SOURCES})
 ############################################################
 
 ### Linking ###
