@@ -8,8 +8,6 @@ struct nikola::App {
   nikola::Window* window; 
   nikola::FrameData frame_data;
   nikola::ResourceGroupID resource_group;
-
-  bool has_editor = false;
 };
 /// App
 /// ----------------------------------------------------------------------
@@ -73,10 +71,8 @@ void app_update(nikola::App* app, const nikola::f64 delta_time) {
   // Disable/enable the GUI
   
   if(nikola::input_key_pressed(nikola::KEY_F1)) {
-    app->has_editor                  = !app->has_editor;
-    app->frame_data.camera.is_active = !app->has_editor;
-
-    nikola::input_cursor_show(app->has_editor);
+    nikola::gui_toggle_active();
+    app->frame_data.camera.is_active = !nikola::gui_is_active();
   }
 
   // Update the camera
@@ -94,7 +90,7 @@ void app_render(nikola::App* app) {
 }
 
 void app_render_gui(nikola::App* app) {
-  if(!app->has_editor) {
+  if(!nikola::gui_is_active()) {
     return;
   }
 
