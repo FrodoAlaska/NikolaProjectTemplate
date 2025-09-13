@@ -5,14 +5,17 @@ project(NikolaProjectTemplate) # @TODO: Change the name of your project from her
 ############################################################
 include(FetchContent)
 
-# We must include these variables to turn off 
-# certain outputs of external libraries. Very ugly, I know.
+# We need this to ensure the project is multi-threaded on Windows
+if(WIN32)
+  if(USE_STATIC_MSVC_RUNTIME_LIBRARY)
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  endif()
+endif()
 
-set(ALSOFT_EXAMPLES OFF)
-set(LIBTYPE         STATIC)
-set(qu3e_build_demo OFF)
 
 # Setting the state of Nikola
+
+set(ALSOFT_EXAMPLES      OFF)
 set(NIKOLA_BUILD_TESTBED OFF)
 set(NIKOLA_BUILD_NBR     OFF)
 
@@ -35,6 +38,7 @@ set(PROJECT_INCLUDES
   ${PROJECT_LIBS_DIR}
   
   ${nikola_SOURCE_DIR}/nikola/include
+  ${nikola_SOURCE_DIR}/libs
   ${glfw_SOURCE_DIR}/include
   ${glm_SOURCE_DIR}
 )
@@ -58,7 +62,8 @@ set(PROJECT_SOURCES
 
 ### Targets ###
 ############################################################
-if(NIKOLA_DISTRIBUTE)
+if(DIST_BUILD)
+  add_definitions("-DDIST_BUILD")
   set(EXE_TYPE WIN32)
 else()
   set(EXE_TYPE "")
@@ -71,6 +76,10 @@ add_executable(${PROJECT_NAME} ${EXE_TYPE} ${PROJECT_SOURCES})
 ############################################################
 target_include_directories(${PROJECT_NAME} PUBLIC BEFORE ${PROJECT_INCLUDES})
 target_link_libraries(${PROJECT_NAME} PUBLIC nikola)
+
+target_precompile_headers(${PROJECT_NAME} PRIVATE 
+  "$<$<COMPILE_LANGUAGE:CXX>:${nikola_SOURCE_DIR}/nikola/include/nikola/nikola.h>"
+)
 ############################################################
 
 ### Compiling options ###
